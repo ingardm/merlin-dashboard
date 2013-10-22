@@ -18,7 +18,7 @@
 #
 # See: http://www.gnu.org/copyleft/gpl.html
 
-$socket_path = "/opt/monitor/var/rw/live";
+$socket_path = "/omd/sites/site000/tmp/run/live";
 
 $custom_filters = array(
   'host_name ~ ',
@@ -350,13 +350,8 @@ EOQ;
             $save = "";
             $output = "";
             while ( list(, $row) = each($services) ) {
-                if ($row[2] == 2) {
-                    $class = "critical";
-                } elseif ($row[2] == 1) {
-                    $class = "warning";
-                } elseif ($row[2] == 3) {
-                    $class = "unknown";
-                }
+	      if ($row[2] == 2) {
+                $class = "critical";
 
 		$duration = _print_duration($row[4], time());
 		$date = date("Y-m-d H:i:s", $row[5]);
@@ -366,6 +361,37 @@ EOQ;
 		$output .= "<td class=\"date date_statechange\">".$duration."</td>";
 		$output .= "<td class=\"date date_lastcheck\">".$date."</td></tr>\n";
 		$save .= $row[0];
+              }
+	    };
+	    reset($services);
+            while ( list(, $row) = each($services) ) {
+	      if ($row[2] == 1) {
+                $class = "warning";
+
+		$duration = _print_duration($row[4], time());
+		$date = date("Y-m-d H:i:s", $row[5]);
+
+		$output .= "<tr class=\"".$class."\"><td>".$row[0]."</td><td>".$row[1]."</td>";
+		$output .= "<td>".$row[3]."</td>";
+		$output .= "<td class=\"date date_statechange\">".$duration."</td>";
+		$output .= "<td class=\"date date_lastcheck\">".$date."</td></tr>\n";
+		$save .= $row[0];
+              }
+	    };
+	    reset($services);
+            while ( list(, $row) = each($services) ) {
+	      if ($row[2] == 3) {
+                $class = "unknown";
+
+		$duration = _print_duration($row[4], time());
+		$date = date("Y-m-d H:i:s", $row[5]);
+
+		$output .= "<tr class=\"".$class."\"><td>".$row[0]."</td><td>".$row[1]."</td>";
+		$output .= "<td>".$row[3]."</td>";
+		$output .= "<td class=\"date date_statechange\">".$duration."</td>";
+		$output .= "<td class=\"date date_lastcheck\">".$date."</td></tr>\n";
+		$save .= $row[0];
+              }
 	    };
 
             if ($save):

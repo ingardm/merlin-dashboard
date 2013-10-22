@@ -19,7 +19,7 @@
 # See: http://www.gnu.org/copyleft/gpl.html
 
     $refreshvalue = 10; //value in seconds to refresh page
-    $pagetitle = "op5 Monitor Dashboard";
+    $pagetitle = "Jottacloud Monitoring Dashboard";
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
